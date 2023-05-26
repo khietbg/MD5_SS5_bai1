@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ra.model.entity.Song;
 import ra.service.ISongService;
@@ -44,6 +41,22 @@ public class SongController {
         model.addAttribute("fileName", fileName);
         Song songC = new Song(song.getSongName(),song.getAuthor(),song.getCatalog(),fileName);
         songService.save(songC);
+        return "redirect:/";
+    }
+    @GetMapping("delete/{id}")
+    public String delete(@PathVariable("id")int id){
+        songService.delete(id);
+        return "redirect:/";
+    }
+    @GetMapping("edit/{id}")
+    public String edit(@PathVariable("id")int id,Model model){
+       Song song =  songService.findById(id);
+       model.addAttribute("song",song);
+       return "edit";
+    }
+    @PostMapping("update")
+    public String update(@ModelAttribute("song")Song song){
+        songService.save(song);
         return "redirect:/";
     }
 

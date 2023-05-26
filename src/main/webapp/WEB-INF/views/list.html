@@ -24,7 +24,8 @@
     <td>
       <audio th:attr="src=@{'/files/'+${s.pathFile}}" controls></audio>
     </td>
-      <td><a th:href="@{'/delete/'+${s.}}">Delete</a></td>
+      <td><a th:href="@{'/delete/'+${s.getId()}}">Delete</a></td>
+      <td><a th:href="@{'/edit/'+${s.getId()}}">edit</a></td>
     </th:block>
   </tr>
 </table>

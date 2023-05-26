@@ -38,7 +38,10 @@ public class SongServiceImpl implements ISongService {
 
     @Override
     public Song findById(int id) {
-        return null;
+        String queryStr = "SELECT c FROM Song AS c where c.id =:id";
+        TypedQuery<Song> query = entityManager.createQuery(queryStr, Song.class);
+        query.setParameter("id",id);
+        return query.getSingleResult();
     }
 
     @Override
@@ -48,6 +51,13 @@ public class SongServiceImpl implements ISongService {
         try {
             session = sessionFactory.openSession();
             transaction = session.beginTransaction();
+            Song song1 = findById(song.getId());
+            if (song1!=null){
+               song.setAuthor(song1.getAuthor());
+               song.setSongName(song1.getSongName());
+               song.setCatalog(song1.getCatalog());
+               song.setPathFile(song1.getPathFile());
+            }
             session.saveOrUpdate(song);
             transaction.commit();
         } catch (Exception e) {
@@ -65,6 +75,22 @@ public class SongServiceImpl implements ISongService {
 
     @Override
     public void delete(int id) {
-
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            session.delete(findById(id));
+            transaction.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) {
+                transaction.isActive();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 }
