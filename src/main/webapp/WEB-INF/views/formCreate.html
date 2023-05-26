@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/create" method="post" th:object="${song}" enctype="multipart/form-data">
+  <input type="text" th:field="*{songName}">
+  <input type="text" th:field="*{author}">
+  <input type="text" th:field="*{catalog}">
+  <input type="file" name="file">
+  <button type="submit">Create</button>
+
+</form>
+
+
+</body>
+</html>
